@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>DANH SACH NGUOI O CONG VIEN</h1>
+<table border="1" cellspacing="0" cellpadding="1">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>NAME</td>
+        <td>AGE</td>
+        <td>GENDER</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${people}">
+        <td th:text="${p.getId()}"></td>
+        <td th:text="${p.getName}"></td>
+        <td th:text="${p.getAge}"></td>
+        <td th:text="${p.getGender}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

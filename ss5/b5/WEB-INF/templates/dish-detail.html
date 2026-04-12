@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/bai5-main-layout}">
+<head>
+    <title layout:fragment="title">Chi Tiet Mon An</title>
+    <th:block layout:fragment="styles">
+        .dish-card { border: none; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+        .dish-image { width: 100%; height: 320px; object-fit: cover; border-radius: 12px; }
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content" th:with="dish=${dish ?: T(com.example.restaurant.bai5.mock.MockData).getDefaultDish()}">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card dish-card p-3">
+                <img class="dish-image" th:src="${dish.imageUrl}" src="/images/pho-bo.jpg" alt="Dish image">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card dish-card h-100">
+                <div class="card-body">
+                    <h2 class="card-title" th:text="${dish.name}">Pho Bo</h2>
+                    <p class="text-muted" th:text="${dish.category}">Mon chinh</p>
+                    <p th:text="${dish.description}">Mo ta mon an</p>
+                    <p class="fw-bold" th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">45,000 VNĐ</p>
+                    <span class="badge bg-success" th:if="${dish.isAvailable}">Con hang</span>
+                    <span class="badge bg-danger" th:unless="${dish.isAvailable}">Het hang</span>
+                    <div class="mt-4">
+                        <a class="btn btn-outline-secondary" th:href="@{/bai5/order-quick}">Quay lai dat mon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

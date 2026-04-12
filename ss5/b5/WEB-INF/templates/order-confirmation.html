@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/bai5-main-layout}">
+<head>
+    <title layout:fragment="title">Xac Nhan Don Hang</title>
+    <th:block layout:fragment="styles">
+        .summary-card { border: none; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content" th:with="order=${order ?: T(com.example.restaurant.bai5.mock.MockData).getDefaultOrder()}, summary=${orderSummary ?: T(com.example.restaurant.bai5.mock.MockData).getDefaultOrderSummary()}">
+    <div class="alert alert-success">
+        Don hang da duoc ghi nhan.
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card summary-card">
+                <div class="card-body">
+                    <h4 class="card-title">Thong tin don hang</h4>
+                    <p class="mb-1"><strong>Khach hang:</strong> <span th:text="${order.customerName}">Nguyen Van A</span></p>
+                    <p class="mb-1"><strong>So dien thoai:</strong> <span th:text="${order.customerPhone}">0901234567</span></p>
+                    <p class="mb-1"><strong>Dia chi:</strong> <span th:text="${order.customerAddress}">123 Nguyen Hue</span></p>
+                    <p class="mb-1"><strong>Trang thai:</strong> <span th:text="${order.status}">PENDING</span></p>
+                </div>
+            </div>
+
+            <div class="card summary-card mt-4">
+                <div class="card-body">
+                    <h4 class="card-title">Mon da dat</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Mon an</th>
+                                    <th>So luong</th>
+                                    <th>Don gia</th>
+                                    <th>Thanh tien</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${order.items}">
+                                    <td th:text="${item.dish.name}">Pho Bo</td>
+                                    <td th:text="${item.quantity}">2</td>
+                                    <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">45,000 VNĐ</td>
+                                    <td th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">90,000 VNĐ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card summary-card">
+                <div class="card-body">
+                    <h4 class="card-title">Tong ket</h4>
+                    <div class="d-flex justify-content-between mb-2"><span>Tong tien hang</span><strong th:text="${#numbers.formatDecimal(summary.subtotal, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Thue</span><strong th:text="${#numbers.formatDecimal(summary.tax, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Phi giao hang</span><strong th:text="${#numbers.formatDecimal(summary.deliveryFee, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</strong></div>
+                    <hr>
+                    <div class="d-flex justify-content-between"><span class="fw-bold">Tong cong</span><strong th:text="${#numbers.formatDecimal(summary.total, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</strong></div>
+                    <a class="btn btn-primary w-100 mt-4" th:href="@{/bai5/order-quick}">Dat mon moi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

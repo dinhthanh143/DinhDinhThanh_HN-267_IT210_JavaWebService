@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}">
+      
+<head>
+    <title layout:fragment="title">Danh Sách Món Ăn</title>
+    <th:block layout:fragment="styles">
+        .dish-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .dish-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .dish-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .dish-card:hover .dish-image {
+            transform: scale(1.05);
+        }
+        
+        .unavailable-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+        }
+        
+        .unavailable-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </th:block>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <!-- Page Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">
+                <i class="fas fa-utensils me-3"></i>
+                <span th:text="${category != null ? category : 'Danh Sách Món Ăn'}">Danh Sách Món Ăn</span>
+            </h1>
+            <p class="lead text-muted" th:text="${category != null ? 'Các món ' + category : 'Tất cả các món trong thực đơn'}">
+                Tất cả các món trong thực đơn
+            </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="text-center mb-4">
+            <a href="/bai4/dish-list" class="btn btn-outline-primary me-2">
+                <i class="fas fa-list me-1"></i>Tất Cả
+            </a>
+            <a href="/bai4/category/Mon%20chinh" class="btn btn-outline-success me-2">
+                <i class="fas fa-utensils me-1"></i>Món Chính
+            </a>
+            <a href="/bai4/category/Mon%20an%20vat" class="btn btn-outline-warning me-2">
+                <i class="fas fa-cheese me-1"></i>Món Ăn Vặt
+            </a>
+            <a href="/bai4/category/Mon%20khai%20vi" class="btn btn-outline-info">
+                <i class="fas fa-lemon me-1"></i>Món Khai Vị
+            </a>
+        </div>
+
+        <!-- Dish Grid -->
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 mb-4" th:each="dish : ${dishes}">
+                <div class="card h-100 dish-card position-relative">
+                    <!-- Category Badge -->
+                    <span class="category-badge" th:text="${dish.category}">Món Chính</span>
+                    
+                    <!-- Dish Image -->
+                    <img th:src="${dish.imageUrl}" 
+                         th:alt="${dish.name}" 
+                         class="card-img-top dish-image"
+                         onerror="this.src='/images/default-dish.jpg'">
+                    
+                    <!-- Unavailable Overlay -->
+                    <div th:if="${!dish.isAvailable}" class="unavailable-overlay">
+                        <span class="unavailable-text">Hết Hàng</span>
+                    </div>
+                    
+                    <div class="card-body d-flex flex-column">
+                        <!-- Dish Name -->
+                        <h5 class="card-title fw-bold" th:text="${dish.name}">Tên Món Ăn</h5>
+                        
+                        <!-- Description -->
+                        <p class="card-text text-muted small flex-grow-1" th:text="${dish.description}">
+                            Mô tả món ăn
+                        </p>
+                        
+                        <!-- Price and Actions -->
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="price-tag" th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">
+                                45,000 VNĐ
+                            </span>
+                            
+                            <div>
+                                <a th:href="@{/bai4/dish-detail/{id}(id=${dish.id})}" 
+                                   class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>Xem Chi Tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(dishes)}" class="text-center py-5">
+            <div class="alert alert-warning">
+                <h4><i class="fas fa-exclamation-triangle me-2"></i>Không Tìm Thấy Món Ăn</h4>
+                <p class="mb-0">Hiện tại không có món nào trong danh mục này. Vui lòng quay lại sau!</p>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div th:if="${not #lists.isEmpty(dishes)}" class="row mt-5">
+            <div class="col-md-4">
+                <div class="card text-center border-primary">
+                    <div class="card-body">
+                        <h5 class="text-primary">Tổng Số Món</h5>
+                        <h2 class="text-primary" th:text="${#lists.size(dishes)}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center border-success">
+                    <div class="card-body">
+                        <h5 class="text-success">Còn Hàng</h5>
+                        <h2 class="text-success" th:text="${#lists.size(dishes.?[isAvailable])}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center border-danger">
+                    <div class="card-body">
+                        <h5 class="text-danger">Hết Hàng</h5>
+                        <h2 class="text-danger" th:text="${#lists.size(dishes.?[!isAvailable])}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <th:block layout:fragment="scripts">
+        <script>
+            // Add some interactivity
+            document.addEventListener('DOMContentLoaded', function() {
+                // Animate cards on scroll
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '0';
+                            entry.target.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                entry.target.style.transition = 'all 0.6s ease';
+                                entry.target.style.opacity = '1';
+                                entry.target.style.transform = 'translateY(0)';
+                            }, 100);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.dish-card').forEach(card => {
+                    observer.observe(card);
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

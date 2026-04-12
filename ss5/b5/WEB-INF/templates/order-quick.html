@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/bai5-main-layout}">
+<head>
+    <title layout:fragment="title">Dat Mon Nhanh</title>
+    <th:block layout:fragment="styles">
+        .quick-order-table { background: #fff; border-radius: 12px; overflow: hidden; }
+        .quick-order-table th { white-space: nowrap; }
+        .mock-box { background: #f8f9fa; border-left: 4px solid #3498db; padding: 1rem; margin-bottom: 1rem; }
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content" th:with="menu=${dishes ?: T(com.example.restaurant.bai5.mock.MockData).getDefaultDishes()}">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}">Dat mon thanh cong!</div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}">Co loi xay ra</div>
+
+    <div class="mock-box">
+        <strong>Designer mode:</strong> File HTML van mo duoc doc lap voi du lieu mau.
+    </div>
+
+    <form th:action="@{/bai5/order-submit}" method="post">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="table-responsive quick-order-table">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Mon an</th>
+                                <th>Gia</th>
+                                <th>Trang thai</th>
+                                <th>So luong</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="dish : ${menu}">
+                                <td>
+                                    <div class="fw-bold" th:text="${dish.name}">Pho Bo</div>
+                                    <small class="text-muted" th:text="${dish.description}">Pho bo traditional voi gia vi dam da</small>
+                                </td>
+                                <td th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">45,000 VNĐ</td>
+                                <td>
+                                    <span class="badge bg-success" th:if="${dish.isAvailable}">Con hang</span>
+                                    <span class="badge bg-danger" th:unless="${dish.isAvailable}">Het hang</span>
+                                </td>
+                                <td style="max-width: 120px;">
+                                    <input type="number"
+                                           class="form-control"
+                                           name="quantity-1"
+                                           th:name="'quantity-' + ${dish.id}"
+                                           value="0"
+                                           min="0"
+                                           max="20">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title">Thong tin khach hang</h4>
+                        <div class="mb-3">
+                            <label class="form-label" for="customerName">Ten khach hang</label>
+                            <input class="form-control" id="customerName" name="customerName" type="text" value="Nguyen Van A" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="customerPhone">So dien thoai</label>
+                            <input class="form-control" id="customerPhone" name="customerPhone" type="text" value="0901234567" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="customerAddress">Dia chi giao hang</label>
+                            <textarea class="form-control" id="customerAddress" name="customerAddress" rows="3" required>123 Nguyen Hue, Q.1, TP.HCM</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="orderNotes">Ghi chu</label>
+                            <textarea class="form-control" id="orderNotes" name="orderNotes" rows="2">Giao nhanh, goi dam sot</textarea>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Dat mon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

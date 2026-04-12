@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/bai5-main-layout}">
+<head>
+    <title layout:fragment="title">Loi</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="alert alert-danger">
+        <h4 class="mb-2">Co loi xay ra</h4>
+        <p class="mb-0" th:text="${error}">Loi khong xac dinh</p>
+    </div>
+</div>
+</body>
+</html>
+
