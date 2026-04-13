@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chi Tiết Món Ăn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .food-detail {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .food-detail h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .food-detail img {
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: block;
+        }
+        .info-group {
+            margin-bottom: 15px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            display: inline-block;
+            width: 120px;
+        }
+        .info-value {
+            color: #333;
+        }
+        .price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .category {
+            background-color: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            display: inline-block;
+        }
+        .path-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .path-info h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .path-info code {
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .description {
+            color: #666;
+            font-style: italic;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="food-detail">
+        <h1 th:text="${food.name}">Tên món ăn</h1>
+        
+        <div class="info-group">
+            <span class="category" th:text="${food.category}">Danh mục</span>
+        </div>
+        
+        <div th:if="${food.imagePath}">
+            <img th:src="${@environment.getProperty('server.servlet.context-path') + food.imagePath}" th:alt="${food.name}">
+        </div>
+        
+        <div class="info-group">
+            <span class="info-label">Giá tiền:</span>
+            <span class="price" th:text="${food.price} + ' VNĐ'">0 VNĐ</span>
+        </div>
+        
+        <div class="info-group">
+            <span class="info-label">Mô tả:</span>
+            <span class="description" th:text="${food.description ?: 'Không có mô tả'}">Không có mô tả</span>
+        </div>
+        
+        <div class="path-info">
+            <h3>Thông tin file</h3>
+            <div class="info-group">
+                <span class="info-label">Đường dẫn web:</span>
+                <code th:text="${food.imagePath}">/uploads/filename.jpg</code>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Đường dẫn vật lý:</span>
+                <code th:text="${food.physicalPath}">C:/RikkeiFood_Temp/filename.jpg</code>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <a th:href="@{/bai4/food-form}" class="btn">Thêm món ăn mới</a>
+            <a th:href="@{/bai4/food-list}" class="btn btn-secondary">Xem danh sách</a>
+        </div>
+    </div>
+</body>
+</html>

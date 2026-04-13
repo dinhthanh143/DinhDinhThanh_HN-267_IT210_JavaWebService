@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Món Ăn Mới</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ff6b6b;
+            background-color: #ffe6e6;
+            border-radius: 4px;
+        }
+        .success {
+            color: green;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            background-color: #e8f5e8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thêm Món Ăn Mới</h1>
+    
+    <div th:if="${error}" class="error">
+        <strong>Lỗi:</strong> <span th:text="${error}"></span>
+    </div>
+    
+    <div th:if="${success}" class="success">
+        <strong>Thành công:</strong> <span th:text="${success}"></span>
+    </div>
+    
+    <form th:action="@{/bai4/add-food}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Tên món ăn:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Danh mục:</label>
+            <select id="category" name="category" required>
+                <option value="">-- Chọn danh mục --</option>
+                <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Giá tiền (VNĐ):</label>
+            <input type="number" id="price" name="price" min="0" step="0.01" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Hình ảnh:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <small>Chỉ chấp nhận file ảnh (.jpg, .jpeg, .png). Tối đa 2MB.</small>
+        </div>
+        
+        <button type="submit" class="btn">Thêm món ăn</button>
+    </form>
+    
+    <div style="margin-top: 20px;">
+        <a th:href="@{/bai4/food-list}">Xem danh sách món ăn</a>
+    </div>
+</body>
+</html>

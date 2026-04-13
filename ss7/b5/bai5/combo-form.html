@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo Siêu Combo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ff6b6b;
+            background-color: #ffe6e6;
+            border-radius: 4px;
+        }
+        .success {
+            color: green;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #4CAF50;
+            background-color: #e8f5e8;
+            border-radius: 4px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+            width: auto;
+        }
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        .file-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .required {
+            color: red;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tạo Siêu Combo</h1>
+    
+    <div th:if="${error}" class="error">
+        <strong>Lỗi:</strong> <span th:text="${error}"></span>
+    </div>
+    
+    <div th:if="${success}" class="success">
+        <strong>Thành công:</strong> <span th:text="${success}"></span>
+    </div>
+    
+    <form th:action="@{/bai5/add-combo}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Tên Combo <span class="required">*</span>:</label>
+            <input type="text" id="name" name="name" required placeholder="Ví dụ: Combo Gia Đình">
+        </div>
+        
+        <div class="form-group">
+            <div class="section-title">Chọn món ăn (tối thiểu 2 món) <span class="required">*</span>:</div>
+            <div class="checkbox-group">
+                <div th:each="item : ${availableItems}" class="checkbox-item">
+                    <input type="checkbox" id="item-${item}" name="items" th:value="${item}">
+                    <label th:for="item-${item}" th:text="${item}">Tên món</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Giá Combo (VNĐ) <span class="required">*</span>:</label>
+            <input type="number" id="price" name="price" min="0" step="0.01" required placeholder="0">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <textarea id="description" name="description" placeholder="Mô tả chi tiết về combo..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="banner">Banner Combo <span class="required">*</span>:</label>
+            <input type="file" id="banner" name="banner" accept="image/*" required>
+            <div class="file-info">Chỉ chấp nhận file ảnh (.jpg, .jpeg, .png). Tối đa 10MB.</div>
+        </div>
+        
+        <button type="submit" class="btn">Tạo Combo</button>
+    </form>
+    
+    <div style="margin-top: 30px; text-align: center;">
+        <a th:href="@{/bai5/combo-list}" style="color: #007bff; text-decoration: none;">Xem danh sách combo</a>
+    </div>
+</body>
+</html>

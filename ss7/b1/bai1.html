@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/merchant/update-profile}" th:object="${profile}" method="post">
+
+    <label for="name">Tên cửa hàng:</label>
+    <input type="text" id="name" th:field="*{name}" />
+
+    <label for="phone">Số điện thoại:</label>
+    <input type="text" id="phone" th:field="*{phone}" />
+
+    <label for="active">Đang mở cửa:</label>
+    <input type="checkbox" id="active" th:field="*{active}" />
+
+    <button type="submit">Lưu thông tin</button>
+</form>
+</body>
+</html>

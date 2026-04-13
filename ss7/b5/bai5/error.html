@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lỗi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .error-container {
+            border: 2px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 30px;
+            background-color: #fff5f5;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .error-icon {
+            font-size: 48px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        .error-title {
+            color: #d63031;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .error-message {
+            color: #636e72;
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .btn {
+            background-color: #0984e3;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .btn:hover {
+            background-color: #74b9ff;
+        }
+        .btn-primary {
+            background-color: #00b894;
+        }
+        .btn-primary:hover {
+            background-color: #55efc4;
+        }
+        .btn-secondary {
+            background-color: #636e72;
+        }
+        .btn-secondary:hover {
+            background-color: #b2bec3;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">⚠️</div>
+        <h1 class="error-title">Đã xảy ra lỗi!</h1>
+        <p class="error-message" th:text="${error}">Thông tin lỗi</p>
+        
+        <div style="margin-top: 30px;">
+            <a th:href="@{/bai5/combo-form}" class="btn btn-primary">Quay lại tạo combo</a>
+            <a th:href="@{/bai5/combo-list}" class="btn btn-secondary">Xem danh sách combo</a>
+        </div>
+    </div>
+</body>
+</html>
